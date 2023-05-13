@@ -1,24 +1,34 @@
 package pl.pjwstk.MovieService.MovieServiceSystem.template;
 
-public class Movie {
-    private static int count = 0;
-    int id;
-    String name;
-    String category;
-    int year;
+import jakarta.persistence.*;
 
-    public Movie(String name, String category, int year) {
-        this.id = ++count;;
+@Entity
+public class Movie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private int id;
+   private String name;
+    @Enumerated(EnumType.STRING)
+   private Category category;
+   private int year;
+
+    public Movie(int id, String name, Category category, int year) {
+        this.id = id;
         this.name = name;
         this.category = category;
         this.year = year;
     }
 
     public Movie() {
-        this.id = 0;
-        this.name = "";
-        this.category = "";
-        this.year = 0;
+
+    }
+
+    public enum Category{
+        HORROR,
+        SCIFI,
+        FANTASY,
+        THRILLER,
+        ACTION
     }
 
     public int getId() {
@@ -37,11 +47,11 @@ public class Movie {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
