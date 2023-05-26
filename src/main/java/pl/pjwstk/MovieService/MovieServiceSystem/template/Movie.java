@@ -6,17 +6,21 @@ import jakarta.persistence.*;
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private int id;
+   private long id;
    private String name;
     @Enumerated(EnumType.STRING)
    private Category category;
    private int year;
 
-    public Movie(int id, String name, Category category, int year) {
+    @Column(name = "isAvailable", nullable = false)
+    private boolean isAvailable;
+
+    public Movie(int id, String name, Category category, int year, boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.year = year;
+        this.isAvailable = isAvailable;
     }
 
     public Movie() {
@@ -31,11 +35,11 @@ public class Movie {
         ACTION
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -61,5 +65,13 @@ public class Movie {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }

@@ -18,15 +18,15 @@ public class MovieService {
     }
 
     public List<Movie> getAllMovies() {
-        return movies;
+        return movieRepository.findAll();
     }
 
     public void addMovie(Movie movie) {
-        movies.add(movie);
+        movieRepository.save(movie);
     }
 
     public Movie getById(long id) {
-        for (Movie movie : movies) {
+        for (Movie movie : movieRepository.findAll()) {
             if (movie.getId() == id) {
                 return movie;
             }
@@ -34,17 +34,17 @@ public class MovieService {
         return null;
     }
 
-    public void deleteMovie(int id){
+    public void deleteMovie(long id){
         Movie movie = getById(id);
         if (movie != null){
-            movies.remove(movie);
+            movieRepository.delete(movie);
         }else {
             throw new IllegalArgumentException("film o id " + id + " nie istnieje");
         }
     }
 
-    public void updateMovie(Movie m){
-        Movie movie = getById(m.getId());
+    public void updateMovie(long id, Movie m){
+        Movie movie = movieRepository.getById(id);
         if(movie != null){
             if(m.getName() != null){
                 movie.setName(m.getName());
@@ -58,6 +58,10 @@ public class MovieService {
         }else {
             throw new IllegalArgumentException("film o id " + m.getId() + " nie istnieje");
         }
+    }
+
+    public void setStatus(Long id, boolean status){
+        movieRepository.updateAvailableStatus(id, status);
     }
 
 }

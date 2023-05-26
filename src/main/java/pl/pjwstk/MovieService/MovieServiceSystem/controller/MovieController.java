@@ -26,7 +26,7 @@ import java.util.List;
         }
 
         @GetMapping("/movies/{id}")
-        public ResponseEntity<Movie> getMovieById(@PathVariable int id) {
+        public ResponseEntity<Movie> getMovieById(@PathVariable long id) {
             if (movieService.getById(id) != null) {
                 return ResponseEntity.ok(movieService.getById(id));
             } else {
@@ -45,18 +45,28 @@ import java.util.List;
         }
 
         @PutMapping("/movies/{id}")
-        public ResponseEntity<Movie> updateMovie(@PathVariable int id, @RequestBody Movie movie) {
+        public ResponseEntity<Movie> updateMovie(@PathVariable long id, @RequestBody Movie movie) {
             if (getMovieById(id) != null) {
                 movie.setId(id);
-                movieService.updateMovie(movie);
+                movieService.updateMovie(id, movie);
                 return ResponseEntity.ok(movie);
             } else {
                 return ResponseEntity.badRequest().build();
             }
         }
 
+        @PutMapping("/movies/change/{id}")
+        public ResponseEntity<Movie> updateAvailableStatus(@PathVariable Long id, @RequestBody boolean status){
+            if (movieService.getById(id) != null){
+                movieService.setStatus(id, status);
+                return ResponseEntity.ok(movieService.getById(id));
+            }else{
+                return ResponseEntity.notFound().build();
+            }
+        }
+
         @DeleteMapping("/movies/{id}")
-        public ResponseEntity<Void> deleteMovie(@PathVariable int id) {
+        public ResponseEntity<Void> deleteMovie(@PathVariable long id) {
             if(getMovieById(id) != null){
                 movieService.deleteMovie(id);
                 return ResponseEntity.noContent().build();
